@@ -1,5 +1,98 @@
-html,
+:root {
+  --main-bg-color: #212121;
+  --main-font-color: #fafafa;
+  --main-border-color: #757575;
+  --display-bg-color: #505050;
+  --buttons-equal: #0277bd;
+}
+
 body {
-  margin: 0;
-  padding: 0;
+  color: var(--main-font-color);
+  font-weight: bold;
+}
+
+.container {
+  background-color: var(--main-bg-color);
+  width: 280px;
+  height: 520px;
+  border-radius: 20px;
+  margin: 100px auto;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.display {
+  display: flex;
+  /* border-top: 2px solid var(--main-border-color);
+  border-bottom: 2px solid var(--main-border-color); */
+  height: 30%;
+  margin: 12px 0 12px;
+  /* padding-top: 10px;
+  padding-bottom: 10px; */
+  padding: 10px;
+  font-size: 28px;
+  justify-content: flex-end;
+  align-items: flex-end;
+  background-color: var(--display-bg-color);
+}
+
+.buttons {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-areas:
+    "clear clear delete divide"
+    "seven eight nine multiply"
+    "four five six minus"
+    "one two three plus"
+    "zero zero dot equal";
+  grid-template-columns: repeat(4, 45px);
+  grid-template-rows: repeat(5, 45px);
+  gap: 14px;
+  justify-content: center;
+}
+
+button {
+  border-radius: 50%;
+  color: var(--main-font-color);
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.digit {
+  border: 1px solid var(--main-border-color);
+  background-color: var(--main-bg-color);
+}
+
+.operation {
+  background-color: var(--main-border-color);
+}
+
+.clear {
+  grid-area: clear;
+  border-radius: 45px;
+  background-color: var(--main-border-color);
+}
+
+.delete {
+  grid-area: delete;
+  background-color: var(--main-border-color);
+}
+
+.divide {
+  grid-area: divide;
+}
+
+.dot {
+  background-color: var(--main-border-color);
+}
+
+.zero {
+  grid-area: zero;
+  border-radius: 45px;
+}
+
+.equal {
+  background-color: var(--buttons-equal);
 }
