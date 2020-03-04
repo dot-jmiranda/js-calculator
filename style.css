@@ -4,11 +4,13 @@
   --main-border-color: #757575;
   --display-bg-color: #505050;
   --buttons-equal: #0277bd;
+  --buttons-equal-down: #00446b;
 }
 
 body {
   color: var(--main-font-color);
   font-weight: bold;
+  font-size: 16px;
 }
 
 .container {
@@ -19,24 +21,23 @@ body {
   margin: 100px auto;
   padding: 24px;
   box-sizing: border-box;
+  box-shadow: 0px 0px 16px 6px black;
 }
 
 .display {
   display: flex;
-  /* border-top: 2px solid var(--main-border-color);
-  border-bottom: 2px solid var(--main-border-color); */
   height: 30%;
+  overflow: hidden;
   margin: 12px 0 12px;
-  /* padding-top: 10px;
-  padding-bottom: 10px; */
   padding: 10px;
-  font-size: 28px;
+  font-size: 2em;
   justify-content: flex-end;
   align-items: flex-end;
   background-color: var(--display-bg-color);
 }
 
 .buttons {
+  height: 100%;
   box-sizing: border-box;
   display: grid;
   grid-template-areas:
@@ -54,10 +55,30 @@ body {
 button {
   border-radius: 50%;
   color: var(--main-font-color);
-  font-size: 18px;
+  font-size: 1em;
   font-weight: bold;
   border: none;
   cursor: pointer;
+  box-shadow: 0 4px var(--display-bg-color);
+  transition: none;
+}
+
+button:active {
+  margin-top: 2px;
+  margin-bottom: -2px;
+  box-shadow: 0 2px var(--display-bg-color);
+}
+
+.equal {
+  box-shadow: 0 4px var(--buttons-equal-down);
+}
+
+.equal:active {
+  box-shadow: 0 2px var(--buttons-equal-down);
+}
+
+button:focus {
+  outline: none;
 }
 
 .digit {
