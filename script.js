@@ -9,6 +9,7 @@ let input = "";
 const displayScreen = document.querySelector(".display");
 const digitButtons = document.querySelectorAll(".digit");
 const opButtons = document.querySelectorAll(".operation");
+const equalButton = document.querySelector(".equal");
 
 function display() {
   console.log(operation);
@@ -23,6 +24,7 @@ function addDigit() {
   console.log(digit);
   input += digit;
   displayValue += digit;
+
   display();
 
   keyboardInput = null;
@@ -31,7 +33,7 @@ function addDigit() {
 function addOperation() {
   let op = null;
 
-  keyboardInput === null ? (op = this.textContent) : (digit = keyboardInput);
+  keyboardInput === null ? (op = this.textContent) : (op = keyboardInput);
 
   if (operation.first === "") {
     operation.first = input;
@@ -39,12 +41,13 @@ function addOperation() {
     displayValue += " " + op + " ";
     input = "";
   } else if (operation.second === "") {
+    operation.op = op;
     operation.second = input;
-    input = "";
-  }
 
-  if (operation.first !== "" && operation.second !== "") {
     operate(operation.op, Number(operation.first), Number(operation.second));
+
+    input = "";
+    displayValue = operation.first + " " + operation.op + " ";
   }
 
   display();
@@ -58,6 +61,17 @@ digitButtons.forEach(button => {
 
 opButtons.forEach(button => {
   button.addEventListener("click", addOperation);
+});
+
+equalButton.addEventListener("click", () => {
+  operation.second = input;
+
+  operate(operation.op, Number(operation.first), Number(operation.second));
+
+  input = "";
+  displayValue = operation.first;
+
+  display();
 });
 
 function operate(op, a, b) {
@@ -79,11 +93,8 @@ function operate(op, a, b) {
       break;
   }
 
-  displayValue = result;
   operation.first = result;
-  operation.op = "";
   operation.second = "";
-  return result;
 }
 
 function sum(a, b) {
