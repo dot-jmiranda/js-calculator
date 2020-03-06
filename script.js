@@ -4,11 +4,15 @@ let operation = {
   op: "",
   second: ""
 };
+let afterOp = false;
 
 const displayScreen = document.querySelector(".display");
 const digitButtons = document.querySelectorAll(".digit");
+const dotButton = document.querySelector(".dot");
 const opButtons = document.querySelectorAll(".operation");
 const equalButton = document.querySelector(".equal");
+const clearButton = document.querySelector(".clear");
+const deleteButton = document.querySelector(".delete");
 
 function display() {
   displayScreen.textContent = displayValue;
@@ -18,6 +22,13 @@ function addDigit() {
   let digit = null;
 
   keyboardInput === null ? (digit = this.textContent) : (digit = keyboardInput);
+
+  if (afterOp === true) {
+    operation.first = "";
+    displayValue = "";
+    display();
+    afterOp = false;
+  }
 
   if (operation.op === "") {
     operation.first += digit;
@@ -33,10 +44,40 @@ function addDigit() {
   console.log(operation);
 }
 
+function addDot() {
+  if (afterOp === true) {
+    operation.first = "";
+    displayValue = "";
+    display();
+    afterOp = false;
+  }
+
+  if (operation.op === "") {
+    if (operation.first.includes(".")) return;
+    operation.first += ".";
+  } else {
+    if (operation.second.includes(".")) return;
+    operation.second += ".";
+  }
+
+  displayValue += ".";
+  display();
+
+  keyboardInput = null;
+
+  console.log(operation);
+}
+
 function addOperation() {
   let op = null;
 
   keyboardInput === null ? (op = this.textContent) : (op = keyboardInput);
+
+  if (afterOp == true) {
+    operation.op = "";
+    operation.second = "";
+    afterOp = false;
+  }
 
   if (operation.op === "") {
     operation.op = op;
@@ -55,32 +96,62 @@ function addOperation() {
   console.log(operation);
 }
 
+function addEqual() {
+  if (operation.first === "") {
+    return;
+  } else if (operation.second === "") {
+    return;
+  } else {
+    operate(operation.op, Number(operation.first), Number(operation.second));
+  }
+
+  displayValue = operation.first;
+  afterOp = true;
+  display();
+
+  console.log(operation);
+}
+
+function deleteDigit() {
+  if (operation.op === "") {
+    operation.first = operation.first.slice(0, -1);
+    displayValue = displayValue.slice(0, -1);
+  } else if (operation.second === "") {
+    operation.op = "";
+    displayValue = displayValue.slice(0, -3);
+  } else {
+    operation.second = operation.second.slice(0, -1);
+    displayValue = displayValue.slice(0, -1);
+  }
+
+  display();
+}
+
 digitButtons.forEach(button => {
   button.addEventListener("click", addDigit);
 });
+
+dotButton.addEventListener("click", addDot);
 
 opButtons.forEach(button => {
   button.addEventListener("click", addOperation);
 });
 
-equalButton.addEventListener("click", () => {
-  if (operation.first === "") {
-    return;
-  } else if (operation.op === "") {
-    operate("+", Number(operation.first), 0);
-  } else if (operation.second === "") {
-    return;
-  } else {
-    operate(operation.op, operation.first, operation.second);
-  }
+equalButton.addEventListener("click", addEqual);
 
-  displayValue = operation.first;
+clearButton.addEventListener("click", () => {
+  operation.first = "";
+  operation.second = "";
+  operation.op = "";
+  displayValue = "";
+
   display();
 });
 
+deleteButton.addEventListener("click", deleteDigit);
+
 function operate(op, a, b) {
   let result;
-  console.log(op + " " + a + " " + b);
 
   switch (op) {
     case "+":
@@ -97,7 +168,7 @@ function operate(op, a, b) {
       break;
   }
 
-  operation.first = result;
+  operation.first = result.toString();
 }
 
 function sum(a, b) {
@@ -120,8 +191,21 @@ function divide(a, b) {
 let keyboardInput = null;
 
 addEventListener("keydown", e => {
+  console.log(e.keyCode);
   switch (e.keyCode) {
+    case 48:
+      keyboardInput = 0;
+      addDigit();
+      break;
+    case 96:
+      keyboardInput = 0;
+      addDigit();
+      break;
     case 49:
+      keyboardInput = 1;
+      addDigit();
+      break;
+    case 97:
       keyboardInput = 1;
       addDigit();
       break;
@@ -129,7 +213,15 @@ addEventListener("keydown", e => {
       keyboardInput = 2;
       addDigit();
       break;
+    case 98:
+      keyboardInput = 2;
+      addDigit();
+      break;
     case 51:
+      keyboardInput = 3;
+      addDigit();
+      break;
+    case 99:
       keyboardInput = 3;
       addDigit();
       break;
@@ -137,7 +229,15 @@ addEventListener("keydown", e => {
       keyboardInput = 4;
       addDigit();
       break;
+    case 100:
+      keyboardInput = 4;
+      addDigit();
+      break;
     case 53:
+      keyboardInput = 5;
+      addDigit();
+      break;
+    case 101:
       keyboardInput = 5;
       addDigit();
       break;
@@ -145,7 +245,15 @@ addEventListener("keydown", e => {
       keyboardInput = 6;
       addDigit();
       break;
+    case 102:
+      keyboardInput = 6;
+      addDigit();
+      break;
     case 55:
+      keyboardInput = 7;
+      addDigit();
+      break;
+    case 103:
       keyboardInput = 7;
       addDigit();
       break;
@@ -153,13 +261,46 @@ addEventListener("keydown", e => {
       keyboardInput = 8;
       addDigit();
       break;
+    case 104:
+      keyboardInput = 8;
+      addDigit();
+      break;
     case 57:
       keyboardInput = 9;
       addDigit();
       break;
-    case 48:
-      keyboardInput = 0;
+    case 105:
+      keyboardInput = 9;
       addDigit();
+      break;
+    case 106:
+      keyboardInput = "×";
+      addOperation();
+      break;
+    case 107:
+      keyboardInput = "+";
+      addOperation();
+      break;
+    case 109:
+      keyboardInput = "-";
+      addOperation();
+      break;
+    case 111:
+      keyboardInput = "÷";
+      addOperation();
+      break;
+    case 190:
+      addDot();
+      break;
+    case 110:
+      addDot();
+      break;
+      23;
+    case 13:
+      addEqual();
+      break;
+    case 8:
+      deleteDigit();
       break;
     default:
       keyboardInput = null;
