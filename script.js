@@ -4,7 +4,6 @@ let operation = {
   op: "",
   second: ""
 };
-let input = "";
 
 const displayScreen = document.querySelector(".display");
 const digitButtons = document.querySelectorAll(".digit");
@@ -12,7 +11,6 @@ const opButtons = document.querySelectorAll(".operation");
 const equalButton = document.querySelector(".equal");
 
 function display() {
-  console.log(operation);
   displayScreen.textContent = displayValue;
 }
 
@@ -21,13 +19,18 @@ function addDigit() {
 
   keyboardInput === null ? (digit = this.textContent) : (digit = keyboardInput);
 
-  console.log(digit);
-  input += digit;
-  displayValue += digit;
+  if (operation.op === "") {
+    operation.first += digit;
+  } else {
+    operation.second += digit;
+  }
 
+  displayValue += digit;
   display();
 
   keyboardInput = null;
+
+  console.log(operation);
 }
 
 function addOperation() {
@@ -35,32 +38,21 @@ function addOperation() {
 
   keyboardInput === null ? (op = this.textContent) : (op = keyboardInput);
 
-  if (input === "" && operation.first === "") {
-    return;
-  }
-
-  if (operation.first === "" && input !== "") {
-    operation.first = input;
+  if (operation.op === "") {
     operation.op = op;
     displayValue += " " + op + " ";
-    input = "";
-  } else if (operation.second === "" && input !== "") {
-    operation.op = op;
-    operation.second = input;
-
+  } else if (operation.second !== "") {
     operate(operation.op, Number(operation.first), Number(operation.second));
-
-    input = "";
-    displayValue = operation.first + " " + operation.op + " ";
-  } else {
     operation.op = op;
-    input = "";
-    displayValue = operation.first + " " + operation.op + " ";
+    operation.second = "";
+    displayValue = operation.first + " " + op + " ";
   }
 
   display();
 
   keyboardInput = null;
+
+  console.log(operation);
 }
 
 digitButtons.forEach(button => {
@@ -72,21 +64,22 @@ opButtons.forEach(button => {
 });
 
 equalButton.addEventListener("click", () => {
-  operation.second = input;
-  if (operation.op === "") {
-    operation.first = input;
+  if (operation.first === "") {
+    return;
+  } else if (operation.op === "") {
     operate("+", Number(operation.first), 0);
-  } else
-    operate(operation.op, Number(operation.first), Number(operation.second));
+  } else if (operation.second === "") {
+    return;
+  } else {
+    operate(operation.op, operation.first, operation.second);
+  }
 
-  input = "";
   displayValue = operation.first;
-
   display();
 });
 
 function operate(op, a, b) {
-  let result = "";
+  let result;
   console.log(op + " " + a + " " + b);
 
   switch (op) {
@@ -105,7 +98,6 @@ function operate(op, a, b) {
   }
 
   operation.first = result;
-  operation.second = "";
 }
 
 function sum(a, b) {
