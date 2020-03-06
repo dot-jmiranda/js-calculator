@@ -35,7 +35,7 @@ function addOperation() {
 
   keyboardInput === null ? (op = this.textContent) : (op = keyboardInput);
 
-  if (input === "") {
+  if (input === "" && operation.first === "") {
     return;
   }
 
