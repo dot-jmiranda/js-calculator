@@ -35,17 +35,25 @@ function addOperation() {
 
   keyboardInput === null ? (op = this.textContent) : (op = keyboardInput);
 
-  if (operation.first === "") {
+  if (input === "") {
+    return;
+  }
+
+  if (operation.first === "" && input !== "") {
     operation.first = input;
     operation.op = op;
     displayValue += " " + op + " ";
     input = "";
-  } else if (operation.second === "") {
+  } else if (operation.second === "" && input !== "") {
     operation.op = op;
     operation.second = input;
 
     operate(operation.op, Number(operation.first), Number(operation.second));
 
+    input = "";
+    displayValue = operation.first + " " + operation.op + " ";
+  } else {
+    operation.op = op;
     input = "";
     displayValue = operation.first + " " + operation.op + " ";
   }
@@ -65,8 +73,11 @@ opButtons.forEach(button => {
 
 equalButton.addEventListener("click", () => {
   operation.second = input;
-
-  operate(operation.op, Number(operation.first), Number(operation.second));
+  if (operation.op === "") {
+    operation.first = input;
+    operate("+", Number(operation.first), 0);
+  } else
+    operate(operation.op, Number(operation.first), Number(operation.second));
 
   input = "";
   displayValue = operation.first;
