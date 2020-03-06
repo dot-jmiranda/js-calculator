@@ -23,6 +23,15 @@ function addDigit() {
 
   keyboardInput === null ? (digit = this.textContent) : (digit = keyboardInput);
 
+  if (
+    operation.first === "0" &&
+    operation.op === "÷" &&
+    (digit === "0" || digit === 0)
+  ) {
+    alert("You can't divide 0 by 0!");
+    return;
+  }
+
   if (afterOp === true) {
     operation.first = "";
     displayValue = "";
@@ -167,6 +176,9 @@ function operate(op, a, b) {
       result = divide(a, b);
       break;
   }
+
+  result = Math.round(result * 10000 + Number.EPSILON) / 10000;
+  console.log("result --> " + result);
 
   operation.first = result.toString();
 }
